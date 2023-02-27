@@ -17,10 +17,10 @@ public class Account {
     @Id
     @Column(name = "customer_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String customerId;
+    private int customerId;
 
     @Column(name = "account_number")
-    private String accountNumber;
+    private int accountNumber;
 
     @Column(name = "account_type")
     private String accountType;

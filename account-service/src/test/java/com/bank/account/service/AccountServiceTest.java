@@ -33,12 +33,11 @@ class AccountServiceTest {
 
     @Test
     void shouldGetOneAccountFromDbByCustomerId() {
-        String customerId = "1d-aijf";
         Account accountExpected = getDummyAccount();
 
-        when(repository.findAccountByCustomerId(anyString()))
+        when(repository.findAccountByCustomerId(anyInt()))
                 .thenReturn(Optional.of(accountExpected));
-        AccountResponse response = service.getAccountByCustomerId(customerId);
+        AccountResponse response = service.getAccountByCustomerId(1);
 
         assertNotNull(response.getAccountNumber());
         assertEquals(response.getAccountNumber(), accountExpected.getAccountNumber());
@@ -66,7 +65,7 @@ class AccountServiceTest {
     @Test
     void shouldSaveOnceTimeAccount() {
         List<Account> firstGet = repository.findAll();
-        when(repository.findAccountByCustomerId("C001"))
+        when(repository.findAccountByCustomerId(1))
                 .thenReturn(Optional.empty());
         when(repository.save(getDummyAccount())).thenReturn(getDummyAccount());
         String expected = service.saveAccount(getDummyAccountRequest());
@@ -78,7 +77,7 @@ class AccountServiceTest {
     @Test
     void shouldSaveAccountThatAlreadyExist() {
         repository.save(getDummyAccount());
-        when(repository.findAccountByCustomerId("C001"))
+        when(repository.findAccountByCustomerId(1))
                 .thenReturn(Optional.of(getDummyAccount()));
         when(repository.save(getDummyAccount())).thenReturn(getDummyAccount());
         String expected = service.saveAccount(getDummyAccountRequest());
@@ -88,9 +87,9 @@ class AccountServiceTest {
 
     private Account getDummyAccount() {
         return Account.builder()
-                .accountNumber("account-num-01")
-                .customerId("C001")
-                .accountNumber("123")
+                .accountNumber(1)
+                .customerId(1)
+                .accountNumber(1)
                 .accountType("NOMINA")
                 .address("AV EJERCITO")
                 .createDate(LocalDate.now())
@@ -99,9 +98,8 @@ class AccountServiceTest {
 
     private AccountRequest getDummyAccountRequest() {
         return AccountRequest.builder()
-                .customerId("C001")
-                .accountNumber("account-num-01")
-                .accountNumber("123")
+                .customerId(1)
+                .accountNumber(1)
                 .accountType("NOMINA")
                 .address("AV EJERCITO")
                 .build();
@@ -109,9 +107,9 @@ class AccountServiceTest {
 
     private List<Account> getDummyAccountList() {
         return Arrays.asList(
-            new Account("A1", "AC01", "CC", "address 1", LocalDate.now()),
-            new Account("A2", "AC02", "CC", "address 2", LocalDate.now()),
-            new Account("A3", "AC03", "CC", "address 3", LocalDate.now())
+            new Account(1, 1, "CC", "address 1", LocalDate.now()),
+            new Account(2, 2, "CC", "address 2", LocalDate.now()),
+            new Account(3, 3, "CC", "address 3", LocalDate.now())
         );
     }
 }

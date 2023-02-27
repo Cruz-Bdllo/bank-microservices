@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountRequest {
-    private String customerId;
-    private String accountNumber;
+    private int customerId;
+    private int accountNumber;
     private String accountType;
     private String address;
 }

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class AccountService {
     private final AccountRepository repository; // injected
 
-    public AccountResponse getAccountByCustomerId(String customerId) {
+    public AccountResponse getAccountByCustomerId(int customerId) {
         Account accountFunded = repository.findAccountByCustomerId(customerId)
                 .orElse(null);
 

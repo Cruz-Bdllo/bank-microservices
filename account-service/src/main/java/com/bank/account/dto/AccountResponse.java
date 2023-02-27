@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 public class AccountResponse {
-    private String accountNumber;
+    private int accountNumber;
     private String accountType;
     private String address;
     private LocalDate createDate;
