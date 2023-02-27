@@ -6,6 +6,7 @@
 	<modules>
 		<module>account-service</module>
 		<module>config-server-bank</module>
+		<module>discovery-service</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
