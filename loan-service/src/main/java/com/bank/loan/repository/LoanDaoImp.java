@@ -15,20 +15,17 @@ import java.util.Optional;
 public class LoanDaoImp implements LoanDao {
 
     private final JdbcTemplate jdbcTemplate; // Injected
-    @Value("${sql.loan.select.all}")
-    private final String SELECT_ALL_LOANS;
+    private final String SELECT_ALL_LOANS = "SELECT * FROM loan";
 
-    @Value("${sql.loan.select.by.customer}")
-    private final String SELECT_ONE_LOAN;
+    private final String SELECT_ONE_LOAN = "SELECT * FROM loan WHERE customer_id = ?";
 
-    @Value("${sql.loan.select.by.number}")
-    private final String SELECT_LOAN_BY_NUMBER;
+    private final String SELECT_LOAN_BY_NUMBER = "SELECT * FROM loan WHERE loan_number = ?";
 
-    @Value("${sql.loan.insert}")
-    private final String INSERT_LOAN;
+    private final String INSERT_LOAN = "INSERT INTO loan (customer_id, start_dt, loan_type, total_loan, amount_paid, outstanding_amount, create_date) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
-    @Value("${sql.loan.delete}")
-    private final String DELETE_LOAN;
+    private final String DELETE_LOAN = "DELETE FROM loan where loan_number = ?";
+
+    private final String DELETE_ALL = "DELETE FROM loan";
 
     @Override
     public List<Loan> getLoans() {
@@ -38,14 +35,14 @@ public class LoanDaoImp implements LoanDao {
 
     @Override
     public Optional<Loan> getLoanByCustomerId(int customerId) {
-        return jdbcTemplate.query(SELECT_ONE_LOAN, new LoanMapper())
+        return jdbcTemplate.query(SELECT_ONE_LOAN, new LoanMapper(), customerId)
                 .stream()
                 .findFirst();
     }
 
     @Override
     public Optional<Loan> getLoanByNumber(int loanNumber) {
-        return jdbcTemplate.query(SELECT_LOAN_BY_NUMBER, new LoanMapper())
+        return jdbcTemplate.query(SELECT_LOAN_BY_NUMBER, new LoanMapper(), loanNumber)
                 .stream()
                 .findFirst();
     }
@@ -66,5 +63,10 @@ public class LoanDaoImp implements LoanDao {
     @Override
     public int deleteLoan(int loanNumber) {
         return jdbcTemplate.update(DELETE_LOAN, loanNumber);
+    }
+
+    @Override
+    public int deleteAll() {
+        return jdbcTemplate.update(DELETE_ALL);
     }
 }

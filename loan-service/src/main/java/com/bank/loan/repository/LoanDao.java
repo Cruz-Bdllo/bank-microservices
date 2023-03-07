@@ -11,4 +11,6 @@ public interface LoanDao {
     Optional<Loan> getLoanByNumber(int loanNumber);
     int insertLoan(Loan loan);
     int deleteLoan(int loanId);
+
+    int deleteAll();
 }

@@ -39,7 +39,7 @@ public class LoanService {
                     throw new IllegalStateException("Oops something went wrong");
                 }
             },
-            () -> { throw new NotFoundException(String.format("LoanId %d not exist", loanNumber)); }
+            () -> { throw new NotFoundException(String.format("Loan number %d not exist", loanNumber)); }
         );
     }
 }
