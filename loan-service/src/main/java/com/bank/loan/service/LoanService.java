@@ -18,10 +18,8 @@ public class LoanService {
         return loanRepository.getLoans();
     }
 
-    public Loan getLoanByCustomerId(int customerId) {
-        return loanRepository.getLoanByCustomerId(customerId)
-                .orElseThrow(() ->
-                        new NotFoundException(String.format("The loan for customerId %d not found", customerId)));
+    public List<Loan> getLoansByCustomerId(int customerId) {
+        return loanRepository.getLoansByCustomerId(customerId);
     }
 
     public void saveLoan(Loan loan) {

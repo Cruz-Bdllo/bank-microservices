@@ -40,20 +40,12 @@ class LoanServiceTest {
     }
 
     @Test
-    void shouldGetLoan() {
-        when(loanDao.getLoanByCustomerId(anyInt())).thenReturn(Optional.of(getDummyLoan()));
-        Loan result = loanService.getLoanByCustomerId(anyInt());
+    void shouldGetLoansForCustomerId() {
+        when(loanDao.getLoansByCustomerId(anyInt())).thenReturn(getDummyListLoan());
+        List<Loan> result = loanService.getLoansByCustomerId(anyInt());
         assertNotNull(result);
-        assertEquals(result.getLoanType(), "PERSONAL");
-    }
-
-    @Test
-    void shouldThrowExceptionWhenLoanNotExist() {
-        int customerId = anyInt();
-        when(loanDao.getLoanByCustomerId(customerId)).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class,
-                () -> loanService.getLoanByCustomerId(customerId));
+        System.out.println("Tamanio del resultado alv => " + result.size());
+        assertEquals(result.size(), 2);
     }
 
     @Test
@@ -100,7 +92,7 @@ class LoanServiceTest {
     private List<Loan> getDummyListLoan() {
         return Arrays.asList(
                 new Loan(1, 1, LocalDate.now(), "PERSONAL", BigDecimal.valueOf(1234), BigDecimal.valueOf(321), 213, LocalDate.now()),
-                new Loan(2, 2, LocalDate.now(), "FINANCE", BigDecimal.valueOf(234), BigDecimal.valueOf(21), 212, LocalDate.now())
+                new Loan(2, 1, LocalDate.now(), "FINANCE", BigDecimal.valueOf(234), BigDecimal.valueOf(21), 212, LocalDate.now())
         );
     }
 }

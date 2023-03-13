@@ -3,7 +3,6 @@ package com.bank.loan.repository;
 import com.bank.loan.model.Loan;
 import com.bank.loan.model.LoanMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +16,7 @@ public class LoanDaoImp implements LoanDao {
     private final JdbcTemplate jdbcTemplate; // Injected
     private final String SELECT_ALL_LOANS = "SELECT * FROM loan";
 
-    private final String SELECT_ONE_LOAN = "SELECT * FROM loan WHERE customer_id = ?";
+    private final String SELECT_LOANS_FOR_CUSTOMER = "SELECT * FROM loan WHERE customer_id = ?";
 
     private final String SELECT_LOAN_BY_NUMBER = "SELECT * FROM loan WHERE loan_number = ?";
 
@@ -34,10 +33,8 @@ public class LoanDaoImp implements LoanDao {
     }
 
     @Override
-    public Optional<Loan> getLoanByCustomerId(int customerId) {
-        return jdbcTemplate.query(SELECT_ONE_LOAN, new LoanMapper(), customerId)
-                .stream()
-                .findFirst();
+    public List<Loan> getLoansByCustomerId(int customerId) {
+        return jdbcTemplate.query(SELECT_LOANS_FOR_CUSTOMER, new LoanMapper(), customerId);
     }
 
     @Override

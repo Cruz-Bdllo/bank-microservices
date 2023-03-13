@@ -25,8 +25,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest(properties = {
     "sql.loan.select.all= SELECT * FROM loan"
 })
@@ -56,7 +54,7 @@ class LoanControllerTest {
     /* ~ ENDPOINTS
     ------------------------------- */
     private static final String GET_ALL_LOANS = "/loan/v0/loan";
-    private static final String GET_LOAN_BY_CUSTOMER = "/loan/v0/loan/1";
+    private static final String GET_LOAN_BY_CUSTOMER = "/loan/v0/loans/1";
 
     private static final String POST_SAVE_LOAN = "/loan/v0/loan";
     private static final String DELETE_LOAN_BY_CUSTOMER = "/loan/v0/loan/5";
@@ -88,13 +86,12 @@ class LoanControllerTest {
     }
 
     @Test
-    void shouldGetLoanByCustomerId() throws Exception {
+    void shouldGetLoansByCustomerId() throws Exception {
         Assertions.assertTrue(repository.getLoans().isEmpty());
-        repository.insertLoan(getDummyListLoan().get(0));
+        getDummyListLoan().stream().forEach(loan -> repository.insertLoan(loan));
         mockMvc.perform(get(GET_LOAN_BY_CUSTOMER))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.loanType",
-                        Matchers.hasToString("PERSONAL")));
+                .andExpect(jsonPath("$", Matchers.hasSize(2)));
     }
 
     @Test
@@ -106,7 +103,7 @@ class LoanControllerTest {
                         "\"totalLoan\": 10000, \"amountPaid\": 3500, \"outstandingAmount\": 6500, \"createDate\": \"2023-02-20\" }")
         ).andExpect(status().isCreated());
 
-        Assertions.assertNotNull(repository.getLoanByCustomerId(1));
+        Assertions.assertNotNull(repository.getLoansByCustomerId(1));
         Assertions.assertEquals(repository.getLoans().size(), 1);
     }
 
@@ -124,7 +121,7 @@ class LoanControllerTest {
     private List<Loan> getDummyListLoan() {
         return Arrays.asList(
                 new Loan(1, 1, LocalDate.now(), "PERSONAL", BigDecimal.valueOf(1234), BigDecimal.valueOf(321), 213, LocalDate.now()),
-                new Loan(2, 2, LocalDate.now(), "FINANCE", BigDecimal.valueOf(234), BigDecimal.valueOf(21), 212, LocalDate.now())
+                new Loan(2, 1, LocalDate.now(), "FINANCE", BigDecimal.valueOf(234), BigDecimal.valueOf(21), 212, LocalDate.now())
         );
     }
 }

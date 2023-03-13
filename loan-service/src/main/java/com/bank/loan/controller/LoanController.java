@@ -24,9 +24,9 @@ public class LoanController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/loan/{customerId}")
-    public Loan getLoanByCustomerId(@PathVariable int customerId) {
-        return service.getLoanByCustomerId(customerId);
+    @GetMapping("/loans/{customerId}")
+    public List<Loan> getLoansByCustomerId(@PathVariable int customerId) {
+        return service.getLoansByCustomerId(customerId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
